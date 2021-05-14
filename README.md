@@ -1,8 +1,13 @@
 
-# Welcome to your CDK Python project!
+# Welcome to Braket Workshop CDK!
 
-You should explore the contents of this project. It demonstrates a CDK app with an instance of a stack (`braket_workshop_cdk_stack`)
-which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.
+This is a CDK app which creates IAM User and IAM Role for Amazon Braket Hands-on Workshop. 
+
+## Usage
+- Deploy with `cdk deploy braket-workshop-cdk`. 
+- Share Management Console login user: WorkshopUser_XXXXXXXXX_ and password: InitialPassword!! with attendees. 
+
+## How to develop
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
@@ -23,12 +28,6 @@ step to activate your virtualenv.
 
 ```
 $ source .venv/bin/activate
-```
-
-If you are a Windows platform, you would activate the virtualenv like this:
-
-```
-% .venv\Scripts\activate.bat
 ```
 
 Once the virtualenv is activated, you can install the required dependencies.
@@ -61,5 +60,3 @@ command.
  * `cdk deploy`      deploy this stack to your default AWS account/region
  * `cdk diff`        compare deployed stack with current state
  * `cdk docs`        open CDK documentation
-
-Enjoy!

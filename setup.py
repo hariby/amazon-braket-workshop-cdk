@@ -9,11 +9,11 @@ setuptools.setup(
     name="braket_workshop_cdk",
     version="0.0.1",
 
-    description="A sample CDK Python app",
+    description="A CDK Python app for Amazon Braket Workshop",
     long_description=long_description,
     long_description_content_type="text/markdown",
 
-    author="author",
+    author="Yoshitaka Haribara",
 
     package_dir={"": "braket_workshop_cdk"},
     packages=setuptools.find_packages(where="braket_workshop_cdk"),
@@ -21,9 +21,6 @@ setuptools.setup(
     install_requires=[
         "aws-cdk.core==1.103.0",
         "aws-cdk.aws_iam==1.103.0",
-        "aws-cdk.aws_sqs==1.103.0",
-        "aws-cdk.aws_sns==1.103.0",
-        "aws-cdk.aws_sns_subscriptions==1.103.0",
         "aws-cdk.aws_s3==1.103.0",
     ],
 
