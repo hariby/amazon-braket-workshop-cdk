@@ -79,7 +79,8 @@ class BraketWorkshopCdkStack(core.Stack):
             assumed_by=iam.ServicePrincipal("sagemaker.amazonaws.com"), 
             managed_policies=[
                 iam.ManagedPolicy.from_aws_managed_policy_name("AmazonBraketFullAccess")
-                ]
+                ], 
+            role_name='AmazonBraketServiceSageMakerNotebookRole-ForBraketWorkshop'
         )
         
         sagemaker_notebook_policy_doc = iam.PolicyDocument()
