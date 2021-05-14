@@ -2,7 +2,7 @@ import json
 import pytest
 
 from aws_cdk import core
-from braket-workshop-cdk.braket_workshop_cdk_stack import BraketWorkshopCdkStack
+from braket_workshop_cdk.braket_workshop_cdk_stack import BraketWorkshopCdkStack
 
 
 def get_template():
@@ -11,9 +11,13 @@ def get_template():
     return json.dumps(app.synth().get_stack("braket-workshop-cdk").template)
 
 
-# def test_sqs_queue_created():
-#     assert("AWS::SQS::Queue" in get_template())
+def test_iam_group_created():
+    assert("AWS::IAM::Group" in get_template())
 
 
-# def test_sns_topic_created():
-#     assert("AWS::SNS::Topic" in get_template())
+def test_iam_user_created():
+    assert("AWS::IAM::User" in get_template())
+
+
+def test_iam_role_created():
+    assert("AWS::IAM::Role" in get_template())
