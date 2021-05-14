@@ -69,7 +69,7 @@ class BraketWorkshopCdkStack(core.Stack):
         for i in range(25): 
             iam.User(self, f"WorkshopUser{i}", 
                 groups=[workshop_user_group], 
-                password=core.SecretValue("InitialPassword!!"), 
+                password=core.SecretValue("InitialPassword2021!!"), 
                 password_reset_required=True
             )
         
