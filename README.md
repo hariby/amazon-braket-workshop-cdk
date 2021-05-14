@@ -6,6 +6,7 @@ This is a CDK app which creates IAM User and IAM Role for Amazon Braket Hands-on
 ## Usage
 
 ### How to deploy (for Admin)
+From you favorite environment (e.g., AWS CloudShell or AWS Cloud9), 
 
 ```
 sudo npm install -g aws-cdk
