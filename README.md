@@ -5,7 +5,7 @@ This is a CDK app which creates IAM User and IAM Role for Amazon Braket Hands-on
 
 ## Usage
 - Deploy with `cdk deploy braket-workshop-cdk`. 
-- Share Management Console login user: WorkshopUser_XXXXXXXXX_ and password: InitialPassword!! with attendees. 
+- Share Management Console login user: `WorkshopUserXXXXXXXXX` and password: `InitialPassword!!` with attendees. 
 
 ## How to develop
 
