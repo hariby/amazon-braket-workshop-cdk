@@ -21,15 +21,17 @@ cdk deploy braket-workshop-cdk
 ```
 
 After the deployment, please retrieve the initial login password from AWS SecretsManager. 
-Access the secret [`BraketWorkshop/IAMUser/InitialPassword` in Management Console]((https://us-west-2.console.aws.amazon.com/secretsmanager/home?region=us-west-2#!/secret?name=BraketWorkshop%2FIAMUser%2FInitialPassword)) 
+Access the secret [`BraketWorkshop/IAMUser/InitialPassword` in Management Console](https://us-west-2.console.aws.amazon.com/secretsmanager/home?region=us-west-2#!/secret?name=BraketWorkshop%2FIAMUser%2FInitialPassword) 
 or you can also use the AWS CLI command: 
-`aws secretsmanager get-secret-value --secret-id BraketWorkshop/IAMUser/InitialPassword --query 'SecretString' --output text`
+```
+aws secretsmanager get-secret-value --secret-id BraketWorkshop/IAMUser/InitialPassword --query 'SecretString' --output text
+```
 
-Check your AWS Account ID (12-digit numbers) or Alias to create a sign-in URL for participants. 
+Check your AWS Account ID (12-digit numbers) or Alias to create a sign-in URL for participants: 
 https://*account-ID-or-alias*.signin.aws.amazon.com/console
 
 ### How to login (for Participants)
-
-- Open login URL and enter: 
-  - user: `WorkshopUser-n` ($n = 0, ..., N$) and 
-  - password: (retrieve from  by Admin) 
+Workshop admin will provide 3 informations: 
+- Login URL, which contains Account ID (12 digits) or account alias, 
+- IAM user name: `WorkshopUser-n` (n = 0, ..., N), and 
+- Password. 
