@@ -19,5 +19,9 @@ def test_iam_user_created():
     assert("AWS::IAM::User" in get_template())
 
 
+# def test_iam_user_secret():
+#     assert("AWS::SecretsManager::Secret" in get_template())
+
+
 def test_iam_role_created():
     assert("AWS::IAM::Role" in get_template())
