@@ -14,7 +14,7 @@ class BraketWorkshopCdkStack(core.Stack):
         workshop_user_group = iam.Group(
             self, "BraketWorkshopGroup", 
             group_name="BraketWorkshopGroup"
-            )
+        )
             
         workshop_user_group_policy_doc = iam.PolicyDocument()
         
@@ -27,49 +27,49 @@ class BraketWorkshopCdkStack(core.Stack):
                 "sagemaker:CreateNotebookInstanceLifecycleConfig",
                 "sagemaker:ListNotebookInstances",
                 "sagemaker:CreateNotebookInstance"
-                ], 
+            ], 
             resources=["*"]
-            )
+        )
             
         workshop_user_group_policy_statement_iam = iam.PolicyStatement(
             sid="IamPassRole", 
             actions=[
                 "iam:PassRole"
-                ], 
+            ], 
             resources=["arn:aws:iam::*:role/AmazonBraketServiceSageMakerNotebookRole-*"]
-            )
+        )
         
         workshop_user_group_policy_doc.add_statements(
             workshop_user_group_policy_statement_sagemaker
-            )
+        )
         
         workshop_user_group_policy_doc.add_statements(
             workshop_user_group_policy_statement_iam
-            )
+        )
         
         workshop_user_group_policy = iam.Policy(
             self, id="BraketWorkshopUserGroupIAMPolicy", 
             document=workshop_user_group_policy_doc, 
             groups=[workshop_user_group], 
             policy_name="BraketWorkshopUserGroupIAMPolicy"
-            )
+        )
             
         workshop_user_group.add_managed_policy(
             iam.ManagedPolicy.from_aws_managed_policy_name("AmazonBraketFullAccess")
-            )
+        )
         
         workshop_user_group.add_managed_policy(
             iam.ManagedPolicy.from_aws_managed_policy_name("CloudWatchLogsReadOnlyAccess")
-            )
+        )
         
         workshop_user_group.add_managed_policy(
             iam.ManagedPolicy.from_aws_managed_policy_name("IAMUserChangePassword")
-            )
+        )
         
         # Auto generate initial IAM User password
         secret = secretsmanager.Secret(
             self, "Secret", secret_name='BraketWorkshop/IAMUser/InitialPassword'
-            )
+        )
         
         for i in range(25): 
             iam_user = iam.User(
@@ -78,7 +78,7 @@ class BraketWorkshopCdkStack(core.Stack):
                 groups=[workshop_user_group], 
                 password=secret.secret_value, 
                 password_reset_required=True
-                )
+            )
         
         # Create IAM Role for Notebook 
         braket_notebook_role = iam.Role(
@@ -86,9 +86,9 @@ class BraketWorkshopCdkStack(core.Stack):
             assumed_by=iam.ServicePrincipal("sagemaker.amazonaws.com"), 
             managed_policies=[
                 iam.ManagedPolicy.from_aws_managed_policy_name("AmazonBraketFullAccess")
-                ], 
+            ], 
             role_name='AmazonBraketServiceSageMakerNotebookRole-ForBraketWorkshop'
-            )
+        )
         
         sagemaker_notebook_policy_doc = iam.PolicyDocument()
         
@@ -97,12 +97,12 @@ class BraketWorkshopCdkStack(core.Stack):
                 "s3:GetObject",
                 "s3:PutObject",
                 "s3:ListBucket"
-                ], 
+            ], 
             resources=[
                 "arn:aws:s3:::amazon-braket-*",
                 "arn:aws:s3:::braketnotebookcdk-*"
-                ]
-            )
+            ]
+        )
         
         sagemaker_notebook_policy_statement_cwlogs = iam.PolicyStatement(
             actions=[
@@ -110,16 +110,16 @@ class BraketWorkshopCdkStack(core.Stack):
                 "logs:DescribeLogStreams",
                 "logs:PutLogEvents",
                 "logs:CreateLogGroup"
-                ], 
+            ], 
             resources=[
                 "arn:aws:logs:*::log-group:/aws/sagemaker/*"
-                ]
-            )
+            ]
+        )
         
         sagemaker_notebook_policy_statement_braket = iam.PolicyStatement(
             actions=["braket:*"], 
             resources=["*"]
-            )
+        )
         
         sagemaker_notebook_policy_doc.add_statements(sagemaker_notebook_policy_statement_s3)
         sagemaker_notebook_policy_doc.add_statements(sagemaker_notebook_policy_statement_cwlogs)
@@ -130,7 +130,7 @@ class BraketWorkshopCdkStack(core.Stack):
             document=sagemaker_notebook_policy_doc, 
             roles=[braket_notebook_role], 
             policy_name="AmazonBraketServiceSageMakerNotebookPolicy"
-            )
+        )
         
         
         # Create IAM Policy to disable QPU
@@ -141,9 +141,9 @@ class BraketWorkshopCdkStack(core.Stack):
             actions=[
                 "braket:GetQuantumTask",
                 "braket:ListTagsForResource"
-                ], 
+            ], 
             resources=["arn:aws:braket:*:*:quantum-task/*"]
-            )
+        )
         
         braket_disable_qpu_allow_read_only_resources = iam.PolicyStatement(
             sid="ExplicitAllowReadOnlyActionsOnAllResources", 
@@ -151,18 +151,18 @@ class BraketWorkshopCdkStack(core.Stack):
                 "braket:GetDevice",
                 "braket:SearchDevices",
                 "braket:SearchQuantumTasks"
-                ], 
+            ], 
             resources=["*"]
-            )
+        )
         
         braket_disable_qpu_deny_create_task = iam.PolicyStatement(
             sid="ExplicitDenyCreateQuantumTask", 
             effect=iam.Effect.DENY, 
             actions=[
                 "braket:CreateQuantumTask"
-                ], 
+            ], 
             resources=["arn:aws:braket::*:device/qpu/*"]
-            )
+        )
         
         braket_disable_qpu_policy_doc.add_statements(braket_disable_qpu_allow_read_only_tasks)
         braket_disable_qpu_policy_doc.add_statements(braket_disable_qpu_allow_read_only_resources)
