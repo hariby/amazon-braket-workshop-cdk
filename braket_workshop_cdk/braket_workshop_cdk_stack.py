@@ -167,4 +167,9 @@ class BraketWorkshopCdkStack(core.Stack):
         braket_disable_qpu_policy_doc.add_statements(braket_disable_qpu_allow_read_only_resources)
         braket_disable_qpu_policy_doc.add_statements(braket_disable_qpu_deny_create_task)
         
-        
+        braket_disable_qpu_policy = iam.Policy(
+            self, id="AmazonBraketDisableQPUPolicy", 
+            document=braket_disable_qpu_policy_doc, 
+            roles=[braket_notebook_role], 
+            policy_name="AmazonBraketDisableQPUPolicy"
+        )
