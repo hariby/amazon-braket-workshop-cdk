@@ -20,13 +20,6 @@ cdk synth
 cdk deploy braket-workshop-cdk
 ```
 
-After the deployment, please retrieve the initial login password from AWS SecretsManager. 
-Access the secret [`BraketWorkshop/IAMUser/InitialPassword` in Management Console](https://us-west-2.console.aws.amazon.com/secretsmanager/home?region=us-west-2#!/secret?name=BraketWorkshop%2FIAMUser%2FInitialPassword) 
-or you can also use the AWS CLI command: 
-```
-aws secretsmanager get-secret-value --secret-id BraketWorkshop/IAMUser/InitialPassword --query 'SecretString' --output text
-```
-
 Check your AWS Account ID (12-digit numbers) or Alias to create a sign-in URL for participants: 
 https://*account-ID-or-alias*.signin.aws.amazon.com/console
 
@@ -35,3 +28,10 @@ Workshop admin will provide 3 informations:
 - Login URL, which contains Account ID (12 digits) or account alias, 
 - IAM user name: `WorkshopUser-n` (n = 0, ..., N), and 
 - Password. 
+
+The users will be asked to update password when the initial login. 
+The default password policy enforces the following conditions as in the [document](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#default-policy-details):
+
+- Minimum password length of 8 characters and a maximum length of 128 characters. 
+- Minimum of three of the following mix of character types: uppercase, lowercase, numbers, and `! @ # $ % ^ & * ( ) _ + - = [ ] { } | '` symbols. 
+- Not be identical to your AWS account name or email address. 

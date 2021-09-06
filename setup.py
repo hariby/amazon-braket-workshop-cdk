@@ -7,9 +7,9 @@ with open("README.md") as fp:
 
 setuptools.setup(
     name="braket_workshop_cdk",
-    version="0.0.1",
+    version="0.0.2",
 
-    description="A CDK Python app for Amazon Braket Workshop",
+    description="A CDK Python app to create IAM User/Role for Amazon Braket Workshop",
     long_description=long_description,
     long_description_content_type="text/markdown",
 

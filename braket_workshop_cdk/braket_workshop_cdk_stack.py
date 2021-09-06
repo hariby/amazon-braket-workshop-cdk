@@ -6,7 +6,7 @@ from aws_cdk import (
 
 
 class BraketWorkshopCdkStack(core.Stack):
-
+    
     def __init__(self, scope: core.Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
         
@@ -66,17 +66,16 @@ class BraketWorkshopCdkStack(core.Stack):
             iam.ManagedPolicy.from_aws_managed_policy_name("IAMUserChangePassword")
         )
         
-        # Auto generate initial IAM User password
-        secret = secretsmanager.Secret(
-            self, "Secret", secret_name='BraketWorkshop/IAMUser/InitialPassword'
+        user_password = core.CfnParameter(self, "DefaultUserPassword", 
+            description='The default password of WorkshopUsers which will be required for initial login.'
         )
         
-        for i in range(25): 
+        for i in range(30): 
             iam_user = iam.User(
                 self, f"WorkshopUser{i}", 
                 user_name=f"WorkshopUser-{i}", 
                 groups=[workshop_user_group], 
-                password=secret.secret_value, 
+                password=core.SecretValue(user_password), 
                 password_reset_required=True
             )
         
