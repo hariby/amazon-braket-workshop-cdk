@@ -20,6 +20,8 @@ cdk synth
 cdk deploy braket-workshop-cdk
 ```
 
+Wait until the CloudFormation stack became `CREATE_COMPLETE`. The deployment itself takes roughly 3 minuites.
+
 Check your AWS Account ID (12-digit numbers) or Alias to create a sign-in URL for participants: 
 https://*account-ID-or-alias*.signin.aws.amazon.com/console
 
