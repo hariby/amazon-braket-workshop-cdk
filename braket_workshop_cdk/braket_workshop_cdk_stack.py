@@ -73,7 +73,7 @@ class BraketWorkshopCdkStack(core.Stack):
             no_echo=True
         )
         
-        for i in range(120): 
+        for i in range(30): 
             iam_user = iam.User(
                 self, f"WorkshopUser{i}", 
                 user_name=f"WorkshopUser-{i}", 
