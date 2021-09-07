@@ -67,10 +67,13 @@ class BraketWorkshopCdkStack(core.Stack):
         )
         
         user_password = core.CfnParameter(self, "DefaultUserPassword", 
-            description='The default password of WorkshopUsers which will be required for initial login.'
+            description='The default password of WorkshopUsers which will be required for initial login.', 
+            max_length=128,
+            min_length=8,
+            no_echo=True
         )
         
-        for i in range(30): 
+        for i in range(120): 
             iam_user = iam.User(
                 self, f"WorkshopUser{i}", 
                 user_name=f"WorkshopUser-{i}", 

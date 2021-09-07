@@ -32,8 +32,10 @@ Workshop admin will provide 3 informations:
 - Password. 
 
 The users will be asked to update password when the initial login. 
+<!-- 
 The default password policy enforces the following conditions as in the [document](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#default-policy-details):
 
 - Minimum password length of 8 characters and a maximum length of 128 characters. 
 - Minimum of three of the following mix of character types: uppercase, lowercase, numbers, and `! @ # $ % ^ & * ( ) _ + - = [ ] { } | '` symbols. 
 - Not be identical to your AWS account name or email address. 
+-->
