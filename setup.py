@@ -7,7 +7,7 @@ with open("README.md") as fp:
 
 setuptools.setup(
     name="braket_workshop_cdk",
-    version="0.0.2",
+    version="0.0.3",
 
     description="A CDK Python app to create IAM User/Role for Amazon Braket Workshop",
     long_description=long_description,
@@ -23,6 +23,8 @@ setuptools.setup(
         "aws-cdk.aws_iam==1.103.0",
         "aws-cdk.aws_secretsmanager==1.103.0",
         "aws-cdk.aws_s3==1.103.0",
+        "aws-cdk.aws_cloudformation==1.103.0", 
+        "aws_cdk.aws_sagemaker==1.103.0"
     ],
 
     python_requires=">=3.6",

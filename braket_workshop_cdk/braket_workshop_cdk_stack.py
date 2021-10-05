@@ -1,9 +1,44 @@
 from aws_cdk import (
     aws_iam as iam, 
     aws_secretsmanager as secretsmanager, 
+    aws_cloudformation as cfn, 
     core
 )
+import aws_cdk.aws_sagemaker as sagemaker
 
+life_cycle_config_script = core.Fn.base64("""
+#!/usr/bin/env bash
+sudo -u ec2-user -i <<EOS
+TMPDIR=$(mktemp -d)
+cd "$TMPDIR"
+
+aws s3 cp s3://braketnotebookcdk-notebooklccs3bucketb3089b50-68b4kazkyfol/notebook/braket-notebook-lcc.zip braket-notebook-lcc.zip
+unzip braket-notebook-lcc.zip
+./install.sh
+
+nohup rm -fr "$TMPDIR" &
+EOS"""
+)
+
+class BraketWorkshopNotebookStack(core.Stack):
+    def __init__(self, scope: core.Construct, construct_id: str, notebook_role_arn: str, partition_remainder: int, **kwargs) -> None:
+        super().__init__(scope, construct_id, **kwargs)
+        
+        braket_notebook_life_cycle_config = sagemaker.CfnNotebookInstanceLifecycleConfig(
+            self, "BraketNotebookInstanceLifecycleConfigOnStart", 
+            on_start=[{"content": life_cycle_config_script}]
+            )
+        
+        # Create SageMaker Notebook
+        num_users = int(self.node.try_get_context("num_users"))
+        for i in range(num_users//3): 
+            sagemaker.CfnNotebookInstance(
+                self, f"BraketNotebook{i*3+partition_remainder}", 
+                notebook_instance_name=f"amazon-braket-workshop-user-{i*3+partition_remainder}", 
+                instance_type="ml.t3.medium", 
+                role_arn=notebook_role_arn, 
+                lifecycle_config_name=braket_notebook_life_cycle_config.attr_notebook_instance_lifecycle_config_name
+            )
 
 class BraketWorkshopIAMStack(core.Stack):
     
@@ -90,8 +125,11 @@ class BraketWorkshopIAMStack(core.Stack):
             managed_policies=[
                 iam.ManagedPolicy.from_aws_managed_policy_name("AmazonBraketFullAccess")
             ], 
-            role_name='AmazonBraketServiceSageMakerNotebookRole-ForBraketWorkshop'
+            role_name="AmazonBraketServiceSageMakerNotebookRole-ForBraketWorkshop"
         )
+        
+        # Passing to notebook stacks
+        self.braket_notebook_role = braket_notebook_role
         
         sagemaker_notebook_policy_doc = iam.PolicyDocument()
         
@@ -171,9 +209,12 @@ class BraketWorkshopIAMStack(core.Stack):
         braket_disable_qpu_policy_doc.add_statements(braket_disable_qpu_allow_read_only_resources)
         braket_disable_qpu_policy_doc.add_statements(braket_disable_qpu_deny_create_task)
         
-        braket_disable_qpu_policy = iam.Policy(
-            self, id="AmazonBraketDisableQPUPolicy", 
-            document=braket_disable_qpu_policy_doc, 
-            roles=[braket_notebook_role], 
-            policy_name="AmazonBraketDisableQPUPolicy"
-        )
+        disable_qpu = bool(self.node.try_get_context("disable_qpu"))
+        if disable_qpu: 
+            # Attatch the Disable QPU Policy to the IAM Role
+            braket_disable_qpu_policy = iam.Policy(
+                self, id="AmazonBraketDisableQPUPolicy", 
+                document=braket_disable_qpu_policy_doc, 
+                roles=[braket_notebook_role], 
+                policy_name="AmazonBraketDisableQPUPolicy"
+            )

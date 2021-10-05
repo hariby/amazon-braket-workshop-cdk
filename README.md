@@ -6,7 +6,9 @@ This is a CDK app which creates IAM User and IAM Role for Amazon Braket Hands-on
 ## Usage
 
 ### How to deploy (for Admin)
-From you favorite environment (e.g., AWS CloudShell or AWS Cloud9), 
+From you favorite environment (e.g., AWS CloudShell or AWS Cloud9), run commands below. 
+
+#### 1. Setting up the CDK environment
 
 ```
 sudo npm install -g aws-cdk
@@ -16,8 +18,33 @@ cd amazon-braket-workshop-cdk/
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cdk synth
-cdk deploy braket-workshop-cdk
+```
+
+#### 2. (Optional) Synthesize into CloudFormation templates 
+You can specify the number of attendees (the number of IAM Users or Braket Notebooks). 
+```
+cdk synth --context num_users=30
+```
+
+#### 3. Deploy stack(s)
+As the same as `cdk synth` above, you can specify the number of attendees (the number of IAM Users or Braket Notebooks). 
+You have to specify the initial password for IAM Users (this would be updated on the initial login). 
+
+##### 3.1. Which stacks to deploy
+###### 3.1.a. Only deploying IAM stack
+```
+cdk deploy BraketWorkshopIAMStack --context num_users=30 --parameters DefaultUserPassword="InitialPassword4IAMUser"
+```
+
+###### 3.1.b. Deploying all the stacks including Braket Notebooks
+```
+cdk deploy --all --context num_users=30 --parameters BraketWorkshopIAMStack:DefaultUserPassword="InitialPassword4IAMUser"
+```
+
+##### 3.2. Enable QPU
+By default, QPUs are disabled to avoid unexpected billing in the hands-on workshop. To try QPU, you can enable by adding a `disable_qpu=false` context:  
+```
+cdk deploy BraketWorkshopIAMStack --context num_users=30 --context disable_qpu=false --parameters DefaultUserPassword="InitialPassword4IAMUser"
 ```
 
 Wait until the CloudFormation stack became `CREATE_COMPLETE`. The deployment itself takes roughly 3 minuites.

@@ -13,6 +13,7 @@
     "@aws-cdk/aws-rds:lowercaseDbIdentifier": true,
     "@aws-cdk/aws-efs:defaultEncryptionAtRest": true, 
     
-    "num_users": "30"
+    "num_users": "30", 
+    "disable_qpu": "true"
   }
 }
