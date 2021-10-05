@@ -197,7 +197,7 @@ class BraketWorkshopIAMStack(core.Stack):
         )
         
         braket_disable_qpu_deny_create_task = iam.PolicyStatement(
-            sid="ExplicitDenyCreateQuantumTask", 
+            sid="ExplicitDenyBraketQPUCreateQuantumTask", 
             effect=iam.Effect.DENY, 
             actions=[
                 "braket:CreateQuantumTask"
@@ -209,12 +209,15 @@ class BraketWorkshopIAMStack(core.Stack):
         braket_disable_qpu_policy_doc.add_statements(braket_disable_qpu_allow_read_only_resources)
         braket_disable_qpu_policy_doc.add_statements(braket_disable_qpu_deny_create_task)
         
-        disable_qpu = bool(self.node.try_get_context("disable_qpu"))
+        # Create a Disable QPU Policy to the IAM Role
+        braket_disable_qpu_policy = iam.Policy(
+            self, id="AmazonBraketDisableQPUPolicy", 
+            document=braket_disable_qpu_policy_doc, 
+            policy_name="AmazonBraketDisableQPUPolicy"
+        )
+        
+        
+        from distutils.util import strtobool
+        disable_qpu = strtobool(self.node.try_get_context("disable_qpu"))
         if disable_qpu: 
-            # Attatch the Disable QPU Policy to the IAM Role
-            braket_disable_qpu_policy = iam.Policy(
-                self, id="AmazonBraketDisableQPUPolicy", 
-                document=braket_disable_qpu_policy_doc, 
-                roles=[braket_notebook_role], 
-                policy_name="AmazonBraketDisableQPUPolicy"
-            )
+            braket_disable_qpu_policy.attatchToRoles(braket_notebook_role)
