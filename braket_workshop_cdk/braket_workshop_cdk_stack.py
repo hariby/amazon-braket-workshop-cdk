@@ -25,7 +25,7 @@ class BraketWorkshopNotebookStack(core.Stack):
         super().__init__(scope, construct_id, **kwargs)
         
         braket_notebook_life_cycle_config = sagemaker.CfnNotebookInstanceLifecycleConfig(
-            self, "BraketNotebookInstanceLifecycleConfigOnStart", 
+            self, "braket-notebook-instance-lifecycle-config", 
             on_start=[{"content": life_cycle_config_script}]
             )
         
