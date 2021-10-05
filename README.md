@@ -30,34 +30,37 @@ cdk synth --context num_users=30
 As the same as `cdk synth` above, you can specify the number of attendees (the number of IAM Users or Braket Notebooks). 
 You have to specify the initial password for IAM Users (this would be updated on the initial login). 
 
-##### 3.1. Which stacks to deploy
-###### 3.1.a. Only deploying IAM stack
 ```
 cdk deploy braket-workshop-iam \
     --context num_users=30 \
     --parameters DefaultUserPassword="Braket@2020"
 ```
-
-###### 3.1.b. Deploying all the stacks including Braket Notebooks in 3 AWS Regions
-```
-cdk deploy --all \
-    --context num_users=30 \
-    --parameters braket-workshop-iam:DefaultUserPassword="Braket@2020"
-```
-
-##### 3.2. Enable QPU
-By default, QPUs are disabled to avoid unexpected billing in the hands-on workshop. To try QPU, you can allow access by adding a `disable_qpu=false` context:  
-```
-cdk deploy --all \
-    --context num_users=30 \
-    --context disable_qpu=false \
-    --parameters braket-workshop-iam:DefaultUserPassword="Braket@2020"
-```
-
 Wait until the CloudFormation stack became `CREATE_COMPLETE`. The deployment of the IAM stack takes roughly 3 minuites.
 
 Check your AWS Account ID (12-digit numbers) or Alias to create a sign-in URL for participants: 
 https://*account-ID-or-alias*.signin.aws.amazon.com/console
+
+##### Deployment options 
+###### Enable QPU
+By default, QPUs are disabled to avoid unexpected billing in the hands-on workshop. To try QPU, you can allow access by adding a `disable_qpu=false` context:  
+```
+cdk deploy braket-workshop-iam \
+    --context num_users=30 \
+    --context disable_qpu=false \
+    --parameters DefaultUserPassword="Braket@2020"
+```
+
+###### Deploying all the stacks including Braket Notebooks in 3 AWS Regions
+```
+cdk deploy --all \
+    --context num_users=30 \
+    --parameters braket-workshop-iam:DefaultUserPassword="Braket@2020"
+```
+
+##### 4. Clean up 
+```
+cdk destroy --all
+```
 
 ### How to login (for Participants)
 Workshop admin will provide 3 informations: 
