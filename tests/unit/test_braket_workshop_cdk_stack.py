@@ -2,12 +2,12 @@ import json
 import pytest
 
 from aws_cdk import core
-from braket_workshop_cdk.braket_workshop_cdk_stack import BraketWorkshopCdkStack
+from braket_workshop_cdk.braket_workshop_cdk_stack import BraketWorkshopIAMStack
 
 
 def get_template():
     app = core.App()
-    BraketWorkshopCdkStack(app, "braket-workshop-cdk")
+    BraketWorkshopIAMStack(app, "braket-workshop-cdk")
     return json.dumps(app.synth().get_stack("braket-workshop-cdk").template)
 
 

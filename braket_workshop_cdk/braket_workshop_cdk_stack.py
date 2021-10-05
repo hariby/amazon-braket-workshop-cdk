@@ -5,7 +5,7 @@ from aws_cdk import (
 )
 
 
-class BraketWorkshopCdkStack(core.Stack):
+class BraketWorkshopIAMStack(core.Stack):
     
     def __init__(self, scope: core.Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
@@ -73,7 +73,8 @@ class BraketWorkshopCdkStack(core.Stack):
             no_echo=True
         )
         
-        for i in range(30): 
+        num_users = int(self.node.try_get_context("num_users"))
+        for i in range(num_users): 
             iam_user = iam.User(
                 self, f"WorkshopUser{i}", 
                 user_name=f"WorkshopUser-{i}", 

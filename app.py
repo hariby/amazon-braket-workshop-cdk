@@ -2,10 +2,10 @@
 
 from aws_cdk import core
 
-from braket_workshop_cdk.braket_workshop_cdk_stack import BraketWorkshopCdkStack
+from braket_workshop_cdk.braket_workshop_cdk_stack import BraketWorkshopIAMStack
 
 
 app = core.App()
-BraketWorkshopCdkStack(app, "braket-workshop-cdk", env={'region': 'us-west-2'})
+BraketWorkshopIAMStack(app, "braket-workshop-cdk", env={'region': 'us-west-2'})
 
 app.synth()
