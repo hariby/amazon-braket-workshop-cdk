@@ -220,4 +220,4 @@ class BraketWorkshopIAMStack(core.Stack):
         from distutils.util import strtobool
         disable_qpu = strtobool(self.node.try_get_context("disable_qpu"))
         if disable_qpu: 
-            braket_disable_qpu_policy.attatchToRoles(braket_notebook_role)
+            braket_disable_qpu_policy.attach_to_role(braket_notebook_role)
