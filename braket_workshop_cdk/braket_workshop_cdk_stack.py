@@ -153,7 +153,7 @@ class BraketWorkshopIAMStack(core.Stack):
                 "logs:CreateLogGroup"
             ], 
             resources=[
-                "arn:aws:logs:*::log-group:/aws/sagemaker/*"
+                f"arn:aws:logs:*:{self.account}:log-group:/aws/sagemaker/*"
             ]
         )
         
