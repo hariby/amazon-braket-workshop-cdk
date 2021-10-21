@@ -51,6 +51,7 @@ cdk deploy braket-workshop-iam \
 ```
 
 ###### Deploying all the stacks including Braket Notebooks in 3 AWS Regions
+Before deploying the Notebook Stack, please make sure you have enough limit for Amazon SageMaker Notebook Instances of `ml.t3.medium`. You can submit a service limit increase to AWS Support from [here](https://console.aws.amazon.com/support/home#/case/create). 
 ```
 cdk deploy --all \
     --context num_users=30 \
